@@ -1,3 +1,4 @@
 build/
 *.lp
 .vscode/
+results/

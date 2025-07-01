@@ -2,6 +2,7 @@
 #define HighsWrapper 2
 #define ScipWrapper 3
 #define CoptWrapper 4
+#define ReshalaWrapper 5
 
 #if SOLVER_CLASS == CbcWrapper
 #undef CbcWrapper
@@ -18,4 +19,8 @@
 #if SOLVER_CLASS == CoptWrapper
 #undef CoptWrapper
 #include "wrappers/copt_wrapper.h"
+#endif
+#if SOLVER_CLASS == ReshalaWrapper
+#undef ReshalaWrapper
+#include "wrappers/reshala_wrapper.h"
 #endif
