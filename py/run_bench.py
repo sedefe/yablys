@@ -46,6 +46,8 @@ def main(argv):
         cmd = f'{BUILD_PATH / solver_bin} {problem_folder} > {log_file}'
         # print(cmd)
         s, e, code = bash_call(cmd)
+        if e:
+            print(e)
 
         with open(log_file, 'r') as f:
             for l in f.readlines():
