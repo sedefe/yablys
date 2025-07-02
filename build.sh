@@ -8,6 +8,7 @@ usage() {
   echo "       -S : use SCIP"
   echo "       -H : use HiGHS"
   echo "       -O : use COPT"
+  echo "       -R : use RESHALA"
   exit 0
 }
 
@@ -25,6 +26,9 @@ while getopts "CSHOR" option; do
     ;;
   O)
     oTGT_DEF=-DUSE_COPT=ON
+    ;;
+  R)
+    rTGT_DEF=-DUSE_RESHALA=ON
     ;;
   *)
     usage
@@ -47,4 +51,4 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
-do_make $TARGET_DEF $cTGT_DEF $sTGT_DEF $hTGT_DEF $oTGT_DEF
+do_make $TARGET_DEF $cTGT_DEF $sTGT_DEF $hTGT_DEF $oTGT_DEF $rTGT_DEF
