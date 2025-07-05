@@ -11,6 +11,11 @@ class ScipWrapper : public AbstractWrapper {
         SCIPincludeDefaultPlugins(scip);
     }
 
+    std::string GetVersion() const {
+        return std::string("SCIP-") + std::to_string(SCIP_VERSION_MAJOR) + '.' +
+               std::to_string(SCIP_VERSION_MINOR) + '.' + std::to_string(SCIP_VERSION_PATCH);
+    }
+
     void Read(const std::string &model_path) { SCIPreadProb(scip, model_path.c_str(), NULL); }
     Result Solve() {
         SCIPsolve(scip);

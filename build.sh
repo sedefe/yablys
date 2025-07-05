@@ -3,7 +3,7 @@
 set -e
 
 usage() {
-  echo "Usage: $0 [OPTION]..."
+  echo "Usage: $0 [OPTION]"
   echo "       -C : use CBC"
   echo "       -S : use SCIP"
   echo "       -H : use HiGHS"

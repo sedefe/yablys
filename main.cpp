@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
     std::string models_path = argv[1];
 
     SOLVER_CLASS solver;
+    printf("[YABLYS_VERSION] %s\n", solver.GetVersion().c_str());
 
     DIR *pDir;
     struct dirent *ptrFile;
@@ -32,7 +33,7 @@ int main(int argc, char **argv) {
             auto res = solver.Solve();
             t = clock() - t;
 
-            printf("[YABLYS] %d %10.2f | %7.3f ms\n", res.status, res.objective,
+            printf("[YABLYS_RESULT] %d %10.2f | %7.3f ms\n", res.status, res.objective,
                    1e3 * t / CLOCKS_PER_SEC);
         }
     }

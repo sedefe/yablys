@@ -6,6 +6,8 @@ class CbcWrapper : public AbstractWrapper {
    public:
     CbcWrapper() {}
 
+    std::string GetVersion() const { return std::string("CBC-") + Cbc_getVersion(); }
+
     void Read(const std::string &model_path) {
         model = Cbc_newModel();
         Cbc_readLp(model, model_path.c_str());

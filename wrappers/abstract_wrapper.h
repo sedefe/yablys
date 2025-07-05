@@ -12,6 +12,7 @@ class AbstractWrapper {
    public:
     AbstractWrapper() {}
 
+    virtual std::string GetVersion() const = 0;
     virtual void Read(const std::string&) = 0;
     virtual Result Solve() = 0;
 
