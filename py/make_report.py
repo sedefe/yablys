@@ -30,13 +30,22 @@ def plot(df: pd.DataFrame):
 
     xs = np.logspace(np.log10(t_min), np.log10(t_max), num=101)
     plt.figure(figsize=(8, 4))
-    m = 10
-    for solver in solvers:
+
+    markers = 'ov^*p'
+    linestyles = [(0, (1, 1)),
+                  (0, (2, 2)),
+                  (0, (4, 1)),
+                  (0, (1, 0)),
+                  (0, (4, 4)),]
+
+    for i, solver in enumerate(solvers):
         ts = sdf[f'{solver}_t'].to_numpy()
+
         ys = np.zeros_like(xs)
-        for i, x in enumerate(xs):
-            ys[i] = np.mean(ts < x) * 100
-        plt.plot(xs, ys, label=solver)
+        for j, x in enumerate(xs):
+            ys[j] = np.mean(ts < x) * 100
+        plt.plot(xs, ys, label=solver,
+                 linestyle=linestyles[i], color=f'C{i}', marker=markers[i], markevery=10)
 
     plt.xscale('log')
     plt.xlabel('Time, ms')
