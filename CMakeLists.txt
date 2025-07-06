@@ -4,6 +4,7 @@ project(solver-test LANGUAGES CXX)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--no-as-needed -ldl")
 
 set(COMMON_SOURCES main.cpp)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 option(USE_CBC OFF)
 if(USE_CBC)

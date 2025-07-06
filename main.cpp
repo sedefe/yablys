@@ -1,8 +1,7 @@
-#include <dirent.h>
-
+#include "common.h"
 #include "get_wrapper.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     if (argc != 2) {
         printf("Usage: %s PATH\n", argv[0]);
         return 0;
@@ -12,23 +11,11 @@ int main(int argc, char **argv) {
     SOLVER_CLASS solver;
     printf("[YABLYS_VERSION] %s\n", solver.GetVersion().c_str());
 
-    DIR *pDir;
-    struct dirent *ptrFile;
-    if (!(pDir = opendir(models_path.c_str()))) {
-        fprintf(stderr, "Err model folder %s\n", models_path.c_str());
-        exit(1);
-    }
-    while ((ptrFile = readdir(pDir)) != nullptr) {
-        if (strcmp(ptrFile->d_name, ".") != 0 && strcmp(ptrFile->d_name, "..") != 0) {
-            auto model_path = models_path + "/" + ptrFile->d_name;
-            auto str = model_path.c_str();
-            if (strlen(str) > 3 && !strcmp(str + strlen(str) - 3, ".lp")) {
-                printf("%s\n", model_path.c_str());
-            } else {
-                continue;
-            }
-
-            solver.Read(model_path);
+    for (const auto& entry : std::filesystem::directory_iterator(models_path)) {
+        auto extension = entry.path().extension();
+        auto ft = extension2FileType(extension);
+        if (ft != FileType::kUnknown) {
+            solver.Read(entry.path(), ft);
             auto t = clock();
             auto res = solver.Solve();
             t = clock() - t;

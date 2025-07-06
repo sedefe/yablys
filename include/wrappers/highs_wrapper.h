@@ -8,7 +8,7 @@ class HighsWrapper : public AbstractWrapper {
 
     std::string GetVersion() const { return std::string("HiGHS-") + highsVersion(); }
 
-    void Read(const std::string &model_path) { highs.readModel(model_path); }
+    void Read(const std::string &model_path, FileType ft) { highs.readModel(model_path); }
     Result Solve() {
         highs.run();
 

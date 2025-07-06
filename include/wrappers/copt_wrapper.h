@@ -13,7 +13,7 @@ class CoptWrapper : public AbstractWrapper {
                std::to_string(COPT_VERSION_MINOR) + '.' + std::to_string(COPT_VERSION_TECHNICAL);
     }
 
-    void Read(const std::string &model_path) { model.ReadLp(model_path.c_str()); }
+    void Read(const std::string &model_path, FileType ft) { model.Read(model_path.c_str()); }
     Result Solve() {
         model.Solve();
 
