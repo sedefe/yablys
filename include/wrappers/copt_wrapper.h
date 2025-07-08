@@ -21,6 +21,21 @@ class CoptWrapper : public AbstractWrapper {
                       model.GetDblAttr(COPT_DBLATTR_BESTOBJ)};
     }
 
+    ReturnCode GetCode(int status) {
+        switch (status) {
+            case COPT_MIPSTATUS_OPTIMAL:
+                return ReturnCode::kOptimal;
+            case COPT_LPSTATUS_INFEASIBLE:
+                return ReturnCode::kInfeasible;
+            case COPT_MIPSTATUS_UNBOUNDED:
+                return ReturnCode::kUnbounded;
+            case COPT_MIPSTATUS_INF_OR_UNB:
+                return ReturnCode::kInfOrUnb;
+            default:
+                return ReturnCode::kUnknown;
+        }
+    }
+
     ~CoptWrapper() {}
 
    private:

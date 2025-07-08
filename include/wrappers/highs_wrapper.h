@@ -15,6 +15,24 @@ class HighsWrapper : public AbstractWrapper {
         return Result{int(highs.getModelStatus()), highs.getInfo().objective_function_value};
     }
 
+    ReturnCode GetCode(int status) {
+        switch (HighsModelStatus(status)) {
+            case HighsModelStatus::kOptimal:
+                return ReturnCode::kOptimal;
+            case HighsModelStatus::kInfeasible:
+                return ReturnCode::kInfeasible;
+            case HighsModelStatus::kUnboundedOrInfeasible:
+                return ReturnCode::kInfOrUnb;
+            case HighsModelStatus::kUnbounded:
+                return ReturnCode::kUnbounded;
+            case HighsModelStatus::kTimeLimit:
+            case HighsModelStatus::kIterationLimit:
+                return ReturnCode::kTimeout;
+            default:
+                return ReturnCode::kUnknown;
+        }
+    }
+
     ~HighsWrapper() {}
 
    private:

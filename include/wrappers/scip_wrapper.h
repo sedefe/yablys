@@ -16,11 +16,28 @@ class ScipWrapper : public AbstractWrapper {
                std::to_string(SCIP_VERSION_MINOR) + '.' + std::to_string(SCIP_VERSION_PATCH);
     }
 
-    void Read(const std::string &model_path, FileType ft) { SCIPreadProb(scip, model_path.c_str(), NULL); }
+    void Read(const std::string &model_path, FileType ft) {
+        SCIPreadProb(scip, model_path.c_str(), NULL);
+    }
     Result Solve() {
         SCIPsolve(scip);
 
         return Result{SCIPgetStatus(scip), SCIPgetPrimalbound(scip)};
+    }
+
+    ReturnCode GetCode(int status) {
+        switch (status) {
+            case SCIP_STATUS_OPTIMAL:
+                return ReturnCode::kOptimal;
+            case SCIP_STATUS_INFEASIBLE:
+                return ReturnCode::kInfeasible;
+            case SCIP_STATUS_UNBOUNDED:
+                return ReturnCode::kUnbounded;
+            case SCIP_STATUS_INFORUNBD:
+                return ReturnCode::kInfOrUnb;
+            default:
+                return ReturnCode::kUnknown;
+        }
     }
 
     ~ScipWrapper() { SCIPfree(&scip); }

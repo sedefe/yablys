@@ -53,8 +53,9 @@ def main(argv):
                 elif l.startswith(LOG_TOKEN_R):
                     l = l.split()
                     res[f'{solver_name}_c'].append(int(l[1]))
-                    res[f'{solver_name}_y'].append(float(l[2]))
-                    res[f'{solver_name}_t'].append(float(l[4]))
+                    res[f'{solver_name}_s'].append(int(l[2][1:-1]))
+                    res[f'{solver_name}_y'].append(float(l[3]))
+                    res[f'{solver_name}_t'].append(float(l[5]))
     df = pd.DataFrame(res)
     print(df)
     df.to_csv(RESULTS_PATH / f'results.csv', index=False)

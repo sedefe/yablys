@@ -1,5 +1,6 @@
 build/
 *.lp
+*.mps
 .vscode/
 results/
 venv/

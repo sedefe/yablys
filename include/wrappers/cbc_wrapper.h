@@ -24,7 +24,30 @@ class CbcWrapper : public AbstractWrapper {
     Result Solve() {
         Cbc_solve(model);
 
-        return Result{Cbc_status(model), Cbc_getObjValue(model)};
+        return Result{Cbc_secondaryStatus(model), Cbc_getObjValue(model)};
+    }
+
+    ReturnCode GetCode(int status) {
+        switch (status) {
+            case -1:
+                return ReturnCode::kUnknown;
+            case 0:
+                return ReturnCode::kOptimal;
+            case 1:
+                return ReturnCode::kInfeasible;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                return ReturnCode::kTimeout;
+            case 7:
+                return ReturnCode::kUnbounded;
+            case 8:
+                return ReturnCode::kTimeout;
+            default:
+                return ReturnCode::kUnknown;
+        }
     }
 
     ~CbcWrapper() {

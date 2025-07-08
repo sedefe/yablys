@@ -1,5 +1,6 @@
-#include "common.h"
+#include "file_types.h"
 #include "get_wrapper.h"
+#include "utils.h"
 
 int main(int argc, char** argv) {
     if (argc != 2) {
@@ -19,9 +20,10 @@ int main(int argc, char** argv) {
             auto t = clock();
             auto res = solver.Solve();
             t = clock() - t;
+            res.rc = solver.GetCode(res.status);
 
-            printf("[YABLYS_RESULT] %d %10.2f | %7.3f ms\n", res.status, res.objective,
-                   1e3 * t / CLOCKS_PER_SEC);
+            printf("[YABLYS_RESULT] %d (%d) %10.2f | %7.3f ms\n", to_underlying(res.rc), res.status,
+                   res.objective, 1e3 * t / CLOCKS_PER_SEC);
         }
     }
 
