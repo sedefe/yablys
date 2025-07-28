@@ -19,10 +19,11 @@ class ScipWrapper : public AbstractWrapper {
     void Read(const std::string &model_path, FileType ft) {
         SCIPreadProb(scip, model_path.c_str(), NULL);
     }
-    Result Solve() {
+    Result Solve(double timeout) {
+        SCIPsetRealParam(scip, "limits/time", timeout);
         SCIPsolve(scip);
 
-        return Result{SCIPgetStatus(scip), SCIPgetPrimalbound(scip)};
+        return Result{SCIPgetStatus(scip), SCIPgetPrimalbound(scip), SCIPgetDualbound(scip)};
     }
 
     ReturnCode GetCode(int status) {

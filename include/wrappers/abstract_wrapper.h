@@ -7,14 +7,16 @@
 #include "return_codes.h"
 
 struct Result {
-    Result(int s_, double o_) {
+    Result(int s_, double p_, double d_) {
         status = s_;
-        objective = o_;
+        primal_bound = p_;
+        dual_bound = d_;
     }
 
     int status;
     ReturnCode rc;
-    double objective;
+    double primal_bound;
+    double dual_bound;
 };
 
 class AbstractWrapper {
@@ -23,7 +25,7 @@ class AbstractWrapper {
 
     virtual std::string GetVersion() const = 0;
     virtual void Read(const std::string&, FileType ft) = 0;
-    virtual Result Solve() = 0;
+    virtual Result Solve(double timeout) = 0;
 
     virtual ReturnCode GetCode(int status) = 0;
 

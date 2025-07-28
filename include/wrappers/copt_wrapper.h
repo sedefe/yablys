@@ -14,11 +14,13 @@ class CoptWrapper : public AbstractWrapper {
     }
 
     void Read(const std::string &model_path, FileType ft) { model.Read(model_path.c_str()); }
-    Result Solve() {
+    Result Solve(double timeout) {
+        model.SetDblParam(COPT_DBLPARAM_SOLTIMELIMIT, timeout);
         model.Solve();
 
         return Result{model.GetIntAttr(COPT_INTATTR_MIPSTATUS),
-                      model.GetDblAttr(COPT_DBLATTR_BESTOBJ)};
+                      model.GetDblAttr(COPT_DBLATTR_BESTOBJ),
+                      model.GetDblAttr(COPT_DBLATTR_BESTBND)};
     }
 
     ReturnCode GetCode(int status) {

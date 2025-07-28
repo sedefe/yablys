@@ -9,10 +9,12 @@ class HighsWrapper : public AbstractWrapper {
     std::string GetVersion() const { return std::string("HiGHS-") + highsVersion(); }
 
     void Read(const std::string &model_path, FileType ft) { highs.readModel(model_path); }
-    Result Solve() {
+    Result Solve(double timeout) {
+        highs.setOptionValue("time_limit", timeout);
         highs.run();
-
-        return Result{int(highs.getModelStatus()), highs.getInfo().objective_function_value};
+        double dual;
+        highs.getDualObjectiveValue(dual);
+        return Result{int(highs.getModelStatus()), highs.getObjectiveValue(), dual};
     }
 
     ReturnCode GetCode(int status) {

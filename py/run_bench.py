@@ -28,18 +28,19 @@ def bash_call(cmd, timeout=0):
 
 
 def main(argv):
-    if len(argv) != 2:
-        print(f'Usage: {argv[0]} PROBLEM_FOLDER')
+    if len(argv) != 3:
+        print(f'Usage: {argv[0]} PROBLEM_FOLDER TIMEOUT')
         return 0
 
     problem_folder = Path(argv[1])
+    timeout = float(argv[2])
     RESULTS_PATH.mkdir(parents=True, exist_ok=True)
 
     res = defaultdict(list)
     for solver_bin in BUILD_PATH.glob('test-*'):
         print(f'=== Benchmarking {solver_bin.name} ===')
         log_file = RESULTS_PATH / f'log-{solver_bin.name}.log'
-        cmd = f'{BUILD_PATH / solver_bin} {problem_folder} > {log_file}'
+        cmd = f'{BUILD_PATH / solver_bin} {problem_folder} {timeout} > {log_file}'
         # print(cmd)
         s, e, code = bash_call(cmd)
         if e:
@@ -52,10 +53,12 @@ def main(argv):
                     solver_name = l[1]
                 elif l.startswith(LOG_TOKEN_R):
                     l = l.split()
-                    res[f'{solver_name}_c'].append(int(l[1]))
-                    res[f'{solver_name}_s'].append(int(l[2][1:-1]))
-                    res[f'{solver_name}_y'].append(float(l[3]))
-                    res[f'{solver_name}_t'].append(float(l[5]))
+                    res[f'{solver_name}_m'].append(l[1])
+                    res[f'{solver_name}_c'].append(int(l[2]))
+                    res[f'{solver_name}_s'].append(int(l[3][1:-1]))
+                    res[f'{solver_name}_p'].append(float(l[5]))
+                    res[f'{solver_name}_d'].append(float(l[7]))
+                    res[f'{solver_name}_t'].append(float(l[9]))
     df = pd.DataFrame(res)
     print(df)
     df.to_csv(RESULTS_PATH / f'results.csv', index=False)

@@ -21,10 +21,11 @@ class CbcWrapper : public AbstractWrapper {
                 break;
         }
     }
-    Result Solve() {
+    Result Solve(double timeout) {
+        Cbc_setMaximumSeconds(model, timeout);
         Cbc_solve(model);
 
-        return Result{Cbc_secondaryStatus(model), Cbc_getObjValue(model)};
+        return Result{Cbc_secondaryStatus(model), Cbc_getObjValue(model), Cbc_getBestPossibleObjValue(model)};
     }
 
     ReturnCode GetCode(int status) {
